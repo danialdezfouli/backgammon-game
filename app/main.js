@@ -1,3 +1,4 @@
+const STARTING_GAME_TIME = dev ? 100 : 1000;
 const ROLL_AGAIN_TIME = dev ? 100 : 2000;
 
 function main() {
@@ -49,13 +50,15 @@ function findTurn() {
     let a = 0;
     let b = 0;
 
+    message("Starting the Game");
+
     const roll = () => {
       a = rollSingleDice(white);
       b = rollSingleDice(black);
 
       if (a === b) {
-        message("Rolling Again!");
         timer = setTimeout(() => {
+          message("Rolling Again!");
           roll();
         }, ROLL_AGAIN_TIME);
       } else {
@@ -65,7 +68,10 @@ function findTurn() {
           game.turn = black;
         }
 
-        resolve();
+        setTimeout(() => {
+          resolve();
+        }, STARTING_GAME_TIME);
+
         clearTimeout(timer);
       }
     };
