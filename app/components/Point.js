@@ -3,6 +3,7 @@ class Point {
     /** @type {HTMLElement} */
     this.el = el;
     this.index = index;
+    this.relatedDice = null;
     this.addEventListeners();
   }
 
@@ -30,25 +31,17 @@ class Point {
       return;
     }
 
-    let usedDice = Math.abs(data.index - this.index);
-    if (data.index === kicked_index.white) {
-      usedDice--;
-    } else if (data.index === kicked_index.black) {
-      usedDice = this.index + 1;
-    } else if (this.index === dead_index[data.type]) {
-      usedDice = game.dices.find((d) => d.enable).value;
-    }
-
-    if (dev) {
-      console.log(data.index, this.index, { usedDice });
+    if (!this.relatedDice) {
+      console.error("this.relatedDice error");
+      return;
     }
 
     game.history.push({
-      dice: usedDice,
+      dice: this.relatedDice.value,
       map: JSON.parse(JSON.stringify(map)),
     });
 
-    disableDice(usedDice);
+    disableDice(this.relatedDice.value);
 
     const [len, type] = map[this.index];
     map[data.index][0] -= 1;

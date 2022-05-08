@@ -65,7 +65,9 @@ class Piece {
         continue;
       }
 
-      result.push(game.points[next]);
+      const point = game.points[next];
+      point.relatedDice = dice;
+      result.push(point);
     }
 
     return result;
