@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backgammon</title>
+    <script src="app/components/Dice.js"></script>
+    <script src="app/components/Point.js"></script>
+    <script src="app/components/Piece.js"></script>
+    <script src="app/utils.js"></script>
+    <script src="app/render.js"></script>
+    <script src="app/store.js" defer></script>
+    <script src="app/main.js" defer></script>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main id="app">
+      <div class="boards">
+        <aside class="dead-wrapper"></aside>
+        <section class="board right">
+          <div class="quadrant q4 top"></div>
+          <div class="quadrant q1 bottom"></div>
+          <div class="dices"></div>
+        </section>
+        <aside class="kicked-wrapper"></aside>
+        <section class="board left">
+          <div class="quadrant q3 top"></div>
+          <div class="quadrant q2 bottom"></div>
+          <div class="dices"></div>
+        </section>
+      </div>
+
+      <footer>
+        <div class="message"></div>
+        <div class="controls">
+          <button class="roll_dice_btn" disabled>Roll Dice</button>
+          <button class="undo_btn" disabled>Undo</button>
+          <button class="save_btn" disabled>Save</button>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
