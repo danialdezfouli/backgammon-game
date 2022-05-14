@@ -43,48 +43,38 @@ const dom = {
   },
 };
 
-const game = {
-  turn: null,
-  points: [],
-  rollAgainCounter: 0,
-  dices: [],
-  /** @type {Piece[]} */
-  pieces: [],
-  history: [],
-};
-
 let map = defaultMap();
 
 if (dev) {
   map = [
     [1, "white"],
     [2, "white"],
+    [0, "black"],
+    [2, "white"],
+    [2, "white"],
+    [8, "white"],
+    [0, "black"],
     [0, "white"],
+    [0, "black"],
+    [0, "black"],
+    [1, "black"],
     [0, "white"],
+    [1, "black"],
     [0, "white"],
-    [0, "white"],
-    [0, "white"],
-    [0, "white"],
-    [0, "white"],
-    [0],
-    [0],
+    [2, "black"],
+    [1, "black"],
     [4, "black"],
-    [0, "white"],
-    [0],
-    [0],
-    [0],
-    [4, "black"],
-    [0],
+    [0, "black"],
     [5, "black"],
     [0, "white"],
-    [0],
-    [0],
     [0, "white"],
     [0, "white"],
     [1, "black"],
     [0, "white"],
     [0, "black"],
-    [15, "white"],
+    [0, "white"],
+    [0, "black"],
+    [0, "white"],
   ];
 }
 

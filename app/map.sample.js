@@ -1,4 +1,4 @@
-// const map = [
+// map = [
 //   [6, "white"],
 //   [4, "white"],
 //   [2, "white"],
@@ -29,7 +29,7 @@
 //   [0, "white"],
 // ];
 
-// const map = [
+// map = [
 //   [1, "white"],
 //   [0, "white"],
 //   [0, "white"],

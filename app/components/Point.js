@@ -4,12 +4,12 @@ class Point {
     this.el = el;
     this.index = index;
     this.relatedDice = null;
+    this.onDropSuccess = () => {};
     this.addEventListeners();
   }
 
   onDrop(e) {
     const droppable = this.droppable;
-
     dom.app.classList.remove("dragging");
     game.points.forEach((p) => {
       p.unfocus();
@@ -31,43 +31,7 @@ class Point {
       return;
     }
 
-    if (!this.relatedDice) {
-      console.error("this.relatedDice error");
-      return;
-    }
-
-    game.history.push({
-      dice: this.relatedDice.value,
-      map: JSON.parse(JSON.stringify(map)),
-    });
-
-    disableDice(this.relatedDice.value);
-
-    const [len, type] = map[this.index];
-    map[data.index][0] -= 1;
-    map[this.index][1] = data.type;
-
-    if (data.type !== type && len === 1) {
-      // kick piece
-      const _turn = reverse_types[game.turn];
-      map[this.index][0] = 1;
-      map[kicked_index[_turn]][0]++;
-    } else {
-      map[this.index][0] += 1;
-    }
-
-    render();
-
-    const winner = findWinner();
-    if (winner) {
-      message(titles[winner] + " is Won! 🥳");
-      game.turn = null;
-      dom.saveBtn.disabled = true;
-      dom.undoBtn.disabled = true;
-      dom.rollBtn.disabled = false;
-    } else {
-      highlightMoveablePieces();
-    }
+    this.onDropSuccess(data);
   }
 
   addEventListeners() {

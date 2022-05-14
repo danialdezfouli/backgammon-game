@@ -15,9 +15,9 @@ function canPlayerMove() {
   const moveables = findMoveablePieces();
   if (moveables.length === 0) return false;
 
-  const points = moveables[0].findAvailablePoints();
+  const ways = moveables[0].findAvailableWays();
 
-  if (points.length === 0) return false;
+  if (ways.length === 0) return false;
 
   return true;
 }
@@ -32,7 +32,7 @@ function update() {
   } else {
     if (game.rollAgainCounter > 1) {
       message(`Changing Turn to ${titles[reverse_types[game.turn]]}`);
-      setTimeout(changeTurn, ROLL_AGAIN_TIME);
+      setTimeout(() => changeTurn(), ROLL_AGAIN_TIME);
     } else {
       game.rollAgainCounter++;
       message(`No Movements for ${titles[game.turn]} - Rolling Again`);
@@ -100,15 +100,15 @@ dom.undoBtn.addEventListener("click", (e) => {
     return;
   }
 
-  const { dice, map: latest } = game.history.pop();
+  const { dice, map: latestMap } = game.history.pop();
 
-  map = latest;
+  map = latestMap;
+  dice.enable = true;
 
-  enableDice(dice);
   render();
   highlightMoveablePieces();
 });
 
 dom.saveBtn.addEventListener("click", (e) => {
-  changeTurn();
+  game.changeTurn();
 });

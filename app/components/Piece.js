@@ -6,10 +6,6 @@ class Piece {
     this.el.className = "piece";
     this.el.classList.add(type === black ? "black" : "white");
 
-    // if (dev) {
-    //   this.el.textContent = index;
-    // }
-
     this.onDragStart = this.onDragStart.bind(this);
     this.onClick = this.onClick.bind(this);
   }
@@ -26,37 +22,41 @@ class Piece {
     bar.appendChild(this.el);
   }
 
-  findAvailablePoints() {
-    const dices = game.dices.filter((d) => d.enable);
+  findDestinationDice(dice) {
     const movement = movements[this.type];
+    if (this.index === kicked_index.white) {
+      return 24 - dice.value;
+    } else if (this.index === kicked_index.black) {
+      return dice.value - 1;
+    }
+
+    let next = this.index + dice.value * movement;
+
+    if (next < 0 && game.turn == white) {
+      if (areAllPiecesInHome(white)) {
+        return dead_index.white;
+      }
+      return false;
+    }
+
+    if (next > 23 && game.turn == black) {
+      if (areAllPiecesInHome(black)) {
+        return dead_index.black;
+      }
+      return false;
+    }
+
+    return next;
+  }
+
+  findAvailableWays() {
+    const dices = game.dices.filter((d) => d.enable);
     const result = [];
 
     for (const dice of dices) {
-      let next = 0;
-
-      if (this.index === kicked_index.white) {
-        next = 24 - dice.value;
-      } else if (this.index === kicked_index.black) {
-        next = dice.value - 1;
-      } else {
-        next = this.index + dice.value * movement;
-      }
-
-      if (next < 0 && game.turn == white) {
-        if (areAllPiecesInHome(white)) {
-          next = dead_index.white;
-        } else {
-          continue;
-        }
-        // console.log({ next });
-      }
-
-      if (next > 23 && game.turn == black) {
-        if (areAllPiecesInHome(black)) {
-          next = dead_index.black;
-        } else {
-          continue;
-        }
+      let next = this.findDestinationDice(dice);
+      if (next === false) {
+        continue;
       }
 
       const piecesThere = game.pieces.filter((p) => p.index === next);
@@ -66,24 +66,23 @@ class Piece {
       }
 
       const point = game.points[next];
-      point.relatedDice = dice;
-      result.push(point);
+
+      const way = new Way({
+        point,
+        dice,
+      });
+
+      result.push(way);
     }
 
     return result;
   }
 
-  highlightAvailblePoints(selected) {
-    game.points.forEach((p) => {
-      p.droppable = selected.includes(p);
-    });
-  }
-
   onDragStart(e) {
     if (this.type === game.turn) {
       e.dataTransfer.setData("piece", this.getJsonData());
-      const points = this.findAvailablePoints();
-      this.highlightAvailblePoints(points);
+      const ways = this.findAvailableWays();
+      game.setWays(ways);
     } else {
       e.preventDefault();
     }
@@ -91,8 +90,8 @@ class Piece {
 
   onClick() {
     if (this.draggable) {
-      const points = this.findAvailablePoints();
-      this.highlightAvailblePoints(points);
+      const ways = this.findAvailableWays();
+      game.setWays(ways);
     }
   }
 

@@ -88,8 +88,8 @@ function findMoveablePieces() {
 
   return game.pieces.filter((p) => {
     if (p.type === game.turn && p.index !== dead_index[p.type]) {
-      const points = p.findAvailablePoints();
-      if (points.length > 0) {
+      const ways = p.findAvailableWays();
+      if (ways.length > 0) {
         return true;
       }
     }
@@ -108,28 +108,4 @@ function highlightMoveablePieces() {
     p.draggable = active;
     p.el.classList.toggle("highlight", highlighted);
   });
-}
-
-function disableDice(dice) {
-  const index = game.dices.findIndex((d) => d.value === dice && d.enable);
-
-  if (index > -1) {
-    game.dices[index].enable = false;
-  }
-}
-
-function enableDice(dice) {
-  const index = game.dices.findIndex((d) => d.value === dice && !d.enable);
-
-  if (index > -1) {
-    game.dices[index].enable = true;
-  }
-}
-
-function changeTurn() {
-  game.rollAgainCounter = 0;
-  game.history = [];
-  game.turn = reverse_types[game.turn];
-  render();
-  update();
 }
